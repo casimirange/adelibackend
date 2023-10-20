@@ -36,8 +36,7 @@
             <groupId>com.fasterxml.jackson.jaxrs</groupId>
             <artifactId>jackson-jaxrs-json-provider</artifactId>
         </dependency>
-<<<<<<< HEAD
-=======
+
 <!--        <dependency>-->
 <!--            <groupId>com.twilio.sdk</groupId>-->
 <!--            <artifactId>twilio</artifactId>-->
@@ -63,7 +62,6 @@
 <!--            <artifactId>spring-boot-starter-whatsapp</artifactId>-->
 <!--            <version>1.0.0</version>-->
 <!--        </dependency>-->
->>>>>>> 74fd625... update
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-core</artifactId>
