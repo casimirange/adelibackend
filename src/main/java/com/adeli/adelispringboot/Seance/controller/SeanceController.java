@@ -60,14 +60,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
-<<<<<<< HEAD
-=======
-//import org.apache.tomcat.util.http.fileupload.FileItem;
-//import org.apache.tomcat.util.http.fileupload.IOUtils;
-//import org.apache.tomcat.util.http.fileupload.disk.DiskFileItem;
-//import org.jsoup.Jsoup;
-//import org.jsoup.nodes.Document;
->>>>>>> 74fd625... update
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
