@@ -1,6 +1,5 @@
 package com.adeli.adelispringboot.Prêts.service;
 
-import com.adeli.adelispringboot.Amandes.entity.Amande;
 import com.adeli.adelispringboot.Mangwa.entity.EStatusTransaction;
 import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
 import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
@@ -8,31 +7,25 @@ import com.adeli.adelispringboot.Prêts.entity.Prets;
 import com.adeli.adelispringboot.Prêts.repository.PretRepository;
 import com.adeli.adelispringboot.Seance.entity.Seance;
 import com.adeli.adelispringboot.Seance.service.ISeanceService;
-import com.adeli.adelispringboot.Tontine.dto.TontineResDto;
-import com.adeli.adelispringboot.Tontine.entity.Tontine;
 import com.adeli.adelispringboot.Tontine.repository.TontineRepository;
 import com.adeli.adelispringboot.Tontine.service.ITontineService;
 import com.adeli.adelispringboot.Users.entity.Users;
 import com.adeli.adelispringboot.Users.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -85,10 +78,11 @@ public class PretServiceImpl implements IPretService {
     @Transactional
     public Page<Prets> getPretBySeance(Long idSeance, int page, int size, String sort, String order) {
         Seance seance = iSeanceService.getById(idSeance);
-        TontineResDto  tontineResDto;
-        Page<Prets> tontineList = pretRepository.findBySeance(seance, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
+        TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.PRET).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
+//        Page<Prets> pretSeance = pretRepository.findBySeance(seance, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
+        Page<Prets> pretSeance = pretRepository.findBySeanceOrTypeTransaction(seance, typeTransaction, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)));
 //        List<TontineResDto> tontineResDtoList = new ArrayList<>();
-//        for (Tontine tontine: tontineList){
+//        for (Tontine tontine: pretSeance){
 //            tontineResDto = new TontineResDto();
 //            tontineResDto.setId(tontine.getIdTontine());
 //            tontineResDto.setDescription(tontine.getDescription());
@@ -100,8 +94,8 @@ public class PretServiceImpl implements IPretService {
 //            tontineResDto.setUpdatedAt(tontine.getUpdatedAt());
 //            tontineResDtoList.add(tontineResDto);
 //        }
-//        Page<Prets> orderPage = new PageImpl<>(tontineList, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)), tontineList.getTotalElements());
-        return tontineList;
+//        Page<Prets> orderPage = new PageImpl<>(pretSeance, PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(order), sort)), pretSeance.getTotalElements());
+        return pretSeance;
     }
 
     @Override

@@ -50,10 +50,11 @@ public class InitUser implements ApplicationRunner{
 
         String email = "ouandji.casimir@gmail.com";
         String phone = "693764263";
+        System.out.println("void" + utilisateurRepository.existsByEmail(email));
         if (utilisateurRepository.existsByEmail(email)) {
           System.out.println("Fail -> Email is already in use!");
         }
-        if (utilisateurRepository.existsByTelephone(phone)) {
+        else if (utilisateurRepository.existsByTelephone(phone)) {
           System.out.println("Fail -> Phone is already in use!");
         } else{
 

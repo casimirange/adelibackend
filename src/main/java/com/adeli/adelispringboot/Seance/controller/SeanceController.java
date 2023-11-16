@@ -70,6 +70,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Page;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -83,7 +84,9 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -206,8 +209,9 @@ public class SeanceController {
     public ResponseEntity<?> getSeances(@RequestParam(required = false, value = "page", defaultValue = "0") String pageParam,
                                          @RequestParam(required = false, value = "size", defaultValue = ApplicationConstant.DEFAULT_SIZE_PAGINATION) String sizeParam,
                                          @RequestParam(required = false, defaultValue = "id") String sort,
+                                         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false, value = "date") LocalDate date,
                                          @RequestParam(required = false, defaultValue = "desc") String order) {
-        Page<Seance> list = iSeanceService.getAllSeances(Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
+        Page<Seance> list = iSeanceService.getAllSeances(date, Integer.parseInt(pageParam), Integer.parseInt(sizeParam), sort, order);
         return ResponseEntity.ok(list);
     }
 
@@ -244,13 +248,13 @@ public class SeanceController {
         emailProps.put("date", seance.getDate());
 
         List<Users> usersList = iUserService.getUsers();
-        for (Users user : usersList) {
-            if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
-                emailProps.put("name", user.getLastName());
-                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_COMPTE_RENDU+seance.getDate(), ApplicationConstant.TEMPLATE_EMAIL_COMPTE_RENDU));
-                log.info("Email  send successfull for user: " + user.getEmail());
-            }
-        }
+//        for (Users user : usersList) {
+//            if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
+//                emailProps.put("name", user.getLastName());
+//                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_COMPTE_RENDU+seance.getDate(), ApplicationConstant.TEMPLATE_EMAIL_COMPTE_RENDU));
+//                log.info("Email  send successfull for user: " + user.getEmail());
+//            }
+//        }
 
         HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=compte rendu-" + seance.getDate() + ".pdf");
@@ -335,10 +339,16 @@ public class SeanceController {
         
         String status  = seance.getStatus().getName().toString();
         String sm1  = sm+"";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.FRENCH);
+        DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String mois = seance.getDate().format(formatter);
+        String receptioniste = seance.getUsers().getFirstName() + " " + seance.getUsers().getLastName();
 //        byte[] data = generateReportSeance(seance);
         Map<String, Object> emailProps = new HashMap<>();
         emailProps.put("status", status);
-        emailProps.put("date", seance.getDate());
+        emailProps.put("date", seance.getDate().format(formatter2));
+        emailProps.put("mois", mois);
+        emailProps.put("receptioniste", receptioniste);
         emailProps.put("soldeMangwa", sm1);
         emailProps.put("soldeTontine", st);
         emailProps.put("soldeCaisse", sc);
@@ -355,7 +365,7 @@ public class SeanceController {
             if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
                 emailProps.put("name", user.getLastName() +" "+user.getFirstName());
 //                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_MODIFY_SEANCE+seance.getDate()+" - "+EStatusSession.TERMINEE, ApplicationConstant.TEMPLATE_EMAIL_END_SEANCE, data, "seance du " + seance.getDate() + ".pdf"));
-                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_MODIFY_SEANCE+seance.getDate()+" - "+EStatusSession.TERMINEE, ApplicationConstant.TEMPLATE_EMAIL_END_SEANCE));
+                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_MODIFY_SEANCE+seance.getDate().format(formatter2)+" - "+EStatusSession.TERMINEE, ApplicationConstant.TEMPLATE_EMAIL_END_SEANCE));
                 log.info("Email  send successfull for user: " + user.getEmail());
             }
         }

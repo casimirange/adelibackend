@@ -12,7 +12,6 @@ import com.adeli.adelispringboot.Users.entity.EStatusUser;
 import com.adeli.adelispringboot.Users.entity.Users;
 import com.adeli.adelispringboot.Users.service.IUserService;
 import com.adeli.adelispringboot.authentication.dto.MessageResponseDto;
-import com.adeli.adelispringboot.authentication.service.JwtUtils;
 import com.adeli.adelispringboot.configuration.email.dto.EmailDto;
 import com.adeli.adelispringboot.configuration.email.service.IEmailService;
 import com.adeli.adelispringboot.configuration.globalConfiguration.ApplicationConstant;
@@ -148,18 +147,19 @@ public class SessionRest {
     @PreAuthorize("hasAnyRole('SUPERADMIN')")
     public ResponseEntity<?> updateSession(@Valid @RequestBody SessionResDto sessionResDto, @PathVariable String name) {
 
-        if (iSessionService.getSessionByName(name).get().getName().isEmpty()) {
+        if (!iSessionService.getSessionByName(name).isPresent()) {
             return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-                    messageSource.getMessage("messages.session_exists", null, LocaleContextHolder.getLocale())));
+                    messageSource.getMessage("messages.session_not_exists", null, LocaleContextHolder.getLocale())));
         }
         Session s = iSessionService.findLastSession();
+        Session session = iSessionService.getSessionByName(name).get();
         if (s != null) {
-            if (sessionResDto.getBeginDate().isBefore(s.getEndDate())) {
+            if (sessionResDto.getBeginDate().isBefore(s.getEndDate()) && !session.getBeginDate().equals(sessionResDto.getBeginDate())) {
                 return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
                         messageSource.getMessage("messages.session_order_date", null, LocaleContextHolder.getLocale())));
             }
         }
-        Session session = iSessionService.getSessionByName(name).get();
+
         session.setUpdatedAt(LocalDateTime.now());
         session.setBeginDate(sessionResDto.getBeginDate());
         session.setEndDate(sessionResDto.getEndDate());

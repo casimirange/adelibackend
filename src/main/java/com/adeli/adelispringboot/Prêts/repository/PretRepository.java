@@ -5,11 +5,9 @@
  */
 package com.adeli.adelispringboot.Prêts.repository;
 
-import com.adeli.adelispringboot.Amandes.entity.Amande;
-import com.adeli.adelispringboot.Discipline.entity.Discipline;
+import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
 import com.adeli.adelispringboot.Prêts.entity.Prets;
 import com.adeli.adelispringboot.Seance.entity.Seance;
-import com.adeli.adelispringboot.Users.entity.Users;
 import net.minidev.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +16,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -31,6 +28,7 @@ public interface PretRepository extends JpaRepository<Prets, Long> {
 //    List<Prets> findByRembourse(boolean etat);
 //    List<Prets> findByUser(Users user);
     Page<Prets> findBySeance(Seance seance, Pageable pageable);
+    Page<Prets> findBySeanceOrTypeTransaction(Seance seance, TypeTransaction typeTransaction, Pageable pageable);
     Page<Prets> findAll(Specification<Prets> specification, Pageable pageable);
     
     String planing = "select p.id_pret as id, p.id_pret, p.date_pret, p.date_remboursement, p.montant_prete, p.montant_rembourse,"

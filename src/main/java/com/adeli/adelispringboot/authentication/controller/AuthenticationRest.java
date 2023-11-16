@@ -195,19 +195,26 @@ public class AuthenticationRest {
             Users userUpdate = updateExistingUser(userPrincipal.getUsername(), code);
             String telephone = userUpdate.getTelephone() != null ? userUpdate.getTelephone() : String.valueOf(userUpdate.getTelephone());
             String email = userUpdate.getEmail() != null ? userUpdate.getEmail() : String.valueOf(userUpdate.getEmail());
+//            String bearerToken = jwtUtils.generateJwtToken(userPrincipal.getUsername(),
+//                    jwtUtils.getExpirationBearerToken(), jwtUtils.getSecretBearerToken(), false);
             String bearerToken = jwtUtils.generateJwtToken(userPrincipal.getUsername(),
-                    jwtUtils.getExpirationBearerToken(), jwtUtils.getSecretBearerToken(), false);
+                    jwtUtils.getExpirationBearerToken(), jwtUtils.getSecretBearerToken(), true);
+            String refreshToken = jwtUtils.generateJwtToken(userPrincipal.getUsername(),
+                    jwtUtils.getExpirationRefreshToken(), jwtUtils.getSecretRefreshToken(), true);
+            Users users = authorizationService.getUserInContextApp();
+            List<String> roles = users.getRoles().stream().map(item -> item.getName().name())
+                    .collect(Collectors.toList());
+//            Map<String, Object> emailProps = new HashMap<>();
+//            emailProps.put("code", code);
+//            emailProps.put("telephone", telephone);
+//            emailProps.put("email", email);
 
-            Map<String, Object> emailProps = new HashMap<>();
-            emailProps.put("code", code);
-            emailProps.put("telephone", telephone);
-            emailProps.put("email", email);
+//            emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, email, mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_OPT, ApplicationConstant.TEMPLATE_EMAIL_ENTREPRISE_MEMBRE));
+//            log.info("Email  send successfully for user: " + email);
+//            log.info("Code OTP : " + code);
 
-            emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, email, mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_OPT, ApplicationConstant.TEMPLATE_EMAIL_ENTREPRISE_MEMBRE));
-            log.info("Email  send successfully for user: " + email);
-            log.info("Code OTP : " + code);
-
-            return ResponseEntity.ok().body(new SignInResponse(true, messageSource.getMessage("messages.code-otp", null, LocaleContextHolder.getLocale()), bearerToken, false));
+//            return ResponseEntity.ok().body(new SignInResponse(true, messageSource.getMessage("messages.code-otp", null, LocaleContextHolder.getLocale()), bearerToken, false));
+            return ResponseEntity.ok().body(new AuthSignInResDto(bearerToken, refreshToken, "Bearer", users, roles, true));
 
 
         }

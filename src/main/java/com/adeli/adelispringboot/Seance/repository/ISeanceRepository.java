@@ -5,9 +5,13 @@
  */
 package com.adeli.adelispringboot.Seance.repository;
 
+import com.adeli.adelispringboot.Projet.entity.Projet;
 import com.adeli.adelispringboot.Seance.entity.Seance;
 import com.adeli.adelispringboot.Session.entity.SessionStatus;
 import net.minidev.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -24,6 +28,8 @@ public interface ISeanceRepository extends JpaRepository<Seance, Long> {
 
     boolean existsSeanceByStatus(SessionStatus sessionStatus);
     Seance getSeanceByDate(LocalDate date);
+
+    Page<Seance> findAll(Specification<Seance> specification, Pageable pageable);
 //    String cr = "select c.id_compte_rendu, c.date, c.details from compte_rendu c "
 //            + "join session s on c.id_session = s.id_session "
 //            + "where s.etat = 1"

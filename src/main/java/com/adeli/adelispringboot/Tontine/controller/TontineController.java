@@ -5,8 +5,6 @@
  */
 package com.adeli.adelispringboot.Tontine.controller;
 
-import com.adeli.adelispringboot.Document.entity.ETypeDocument;
-import com.adeli.adelispringboot.Document.entity.TypeDocument;
 import com.adeli.adelispringboot.Mangwa.entity.EStatusTransaction;
 import com.adeli.adelispringboot.Mangwa.entity.Retenue;
 import com.adeli.adelispringboot.Mangwa.entity.TypeTransaction;
@@ -15,11 +13,9 @@ import com.adeli.adelispringboot.Mangwa.repository.IStatusTransactionRepo;
 import com.adeli.adelispringboot.Mangwa.service.IMangwaService;
 import com.adeli.adelispringboot.Planning.repository.PlanningRepository;
 import com.adeli.adelispringboot.Seance.entity.Seance;
-import com.adeli.adelispringboot.Seance.repository.ISeanceRepository;
 import com.adeli.adelispringboot.Seance.service.ISeanceService;
 import com.adeli.adelispringboot.Session.entity.EStatusSession;
 import com.adeli.adelispringboot.Session.entity.Session;
-import com.adeli.adelispringboot.Session.entity.SessionStatus;
 import com.adeli.adelispringboot.Session.repository.ISessionRepo;
 import com.adeli.adelispringboot.Session.repository.IStatusSessionRepo;
 import com.adeli.adelispringboot.Session.service.ISessionService;
@@ -32,7 +28,6 @@ import com.adeli.adelispringboot.Users.entity.Users;
 import com.adeli.adelispringboot.Users.repository.IUserRepo;
 import com.adeli.adelispringboot.Users.service.IUserService;
 import com.adeli.adelispringboot.authentication.dto.MessageResponseDto;
-import com.adeli.adelispringboot.configuration.email.dto.EmailDto;
 import com.adeli.adelispringboot.configuration.globalConfiguration.ApplicationConstant;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,7 +38,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -54,7 +48,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -131,7 +124,7 @@ public class TontineController {
                         retenue.setMontant(session.getMangwa());
                     }else {
                         return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-                                messageSource.getMessage("messages.session_exists", null, LocaleContextHolder.getLocale())));
+                                messageSource.getMessage("messages.session_not_exists", null, LocaleContextHolder.getLocale())));
                     }
 
                     tontine.setSeance(seance);

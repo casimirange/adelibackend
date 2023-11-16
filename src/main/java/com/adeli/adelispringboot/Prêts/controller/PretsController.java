@@ -205,9 +205,10 @@ public class PretsController {
         TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.REMBOURSEMENT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
         StatutPret statutPret = iStatusPretRepo.findByName(pretCreateReqDto.isTotal() ? EStatusPret.INNACHEVE : EStatusPret.ACHEVE).orElseThrow(()-> new ResourceNotFoundException("Statut prêt not found"));
         System.out.println("montant prété "+prets.getMontant_prete());
-        if(pretCreateReqDto.getMontant_rembourse() < ( prets.getMontant_prete() + (prets.getMontant_prete() * session.getTax()/100))){
+        double rem = prets.getMontant_prete() + (prets.getMontant_prete() * session.getTax()/100);
+        if(pretCreateReqDto.getMontant_rembourse() < rem){
             return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
-                    messageSource.getMessage("messages.pret_rembourse_insuffisant", null, LocaleContextHolder.getLocale())));
+                    messageSource.getMessage("le montant rembourse est inferieur au montant prete! minimum: " + rem +" €", null, LocaleContextHolder.getLocale())));
         }
         if(prets.getStatutPret().getName().equals(EStatusPret.ACHEVE)){
             return ResponseEntity.badRequest().body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
