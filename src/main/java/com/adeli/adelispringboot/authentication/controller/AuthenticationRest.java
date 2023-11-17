@@ -393,6 +393,7 @@ public class AuthenticationRest {
     @PostMapping("/reset-password")
     public ResponseEntity<Object> resetPassword(@Valid @RequestBody ResetPasswordDto resetPasswordDto)
             throws Exception {
+        log.info("there {}", resetPasswordDto.getLogin());
         if (resetPasswordDto.getLogin() == null || resetPasswordDto.getLogin().isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new MessageResponseDto(HttpStatus.BAD_REQUEST,
                     messageSource.getMessage("messages.requete_incorrect", null, LocaleContextHolder.getLocale())));
