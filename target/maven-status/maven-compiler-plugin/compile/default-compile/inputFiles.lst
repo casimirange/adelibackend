@@ -11,11 +11,14 @@
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Beneficiaires/entity/Beneficiaire.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/configuration/email/EmailConfig.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/dto/UserEditPasswordDto.java
+/home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Document/service/IDocumentStorageService.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Tontine/service/TontineServiceImpl.java
+/home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Document/repository/IDocumentStoragePropertiesRepo.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/authentication/dto/EmailSenderDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Session/dto/SessionResDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/dto/UserReqDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/entity/RoleUser.java
+/home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Document/entity/DocumentStorageProperties.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/dto/UserEditDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Mangwa/entity/TypeTransaction.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Session/repository/ISessionRepo.java
@@ -45,6 +48,7 @@
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/initDatas/InitTypeDocument.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/repository/IRoleUserRepo.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Beneficiaires/dto/BenefReqDto.java
+/home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Document/service/impl/DocumentStorageServiceImpl.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/authentication/dto/ConfirmAccountPhoneDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Beneficiaires/service/IBeneficiaireService.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/initDatas/InitTypeAccount.java
@@ -80,6 +84,7 @@
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/configuration/exception/DocumentsStorageException.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/authentication/dto/MessageResponseDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Discipline/service/IDisciplineService.java
+/home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Document/repository/ITypeDocumentRepo.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/mapper/UserMapper.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/dto/UserResDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/repository/IStatusUserRepo.java
@@ -95,6 +100,7 @@
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Seance/controller/SeanceController.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/authentication/dto/ConfirmAccountDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/authentication/dto/SignUpResponse.java
+/home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Document/entity/ETypeDocument.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Mangwa/service/IMangwaService.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Session/entity/EStatusSession.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Planning/service/IPlanningService.java
@@ -117,6 +123,7 @@
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Users/entity/OldPassword.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Tontine/dto/TontineResDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Prêts/service/IPretService.java
+/home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Document/dto/UploadFileResponseDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Amandes/service/impl/AmandeServiceImpl.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/authentication/dto/ResetPasswordDto.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Projet/repository/IProjetRepository.java
@@ -147,3 +154,4 @@
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/initDatas/InitSessionStatus.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Discipline/repository/DisciplineRepository.java
 /home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/authentication/controller/AuthenticationRest.java
+/home/casimir/Music/adeli/back/src/main/java/com/adeli/adelispringboot/Document/entity/TypeDocument.java
