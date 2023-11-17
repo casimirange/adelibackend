@@ -121,7 +121,7 @@ public class AmandesController {
             TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(() -> new ResourceNotFoundException("Type de transaction not found"));
             retenue.setTypeTransaction(typeTransaction);
             retenue.setDate(seance.getDate());
-            retenue.setMotif("amande " + user.getLastName());
+            retenue.setMotif(amandeReqDto.getMotif() +" " + user.getLastName());
             retenue.setCreatedAt(LocalDateTime.now());
             retenue.setUser(user);
             iMangwaService.createMangwa(retenue);
@@ -146,7 +146,7 @@ public class AmandesController {
         Amande amande = iAmandeService.getAmandeById(id);
 
 
-        if (amandeReqDto.pay) {
+        if (amandeReqDto.pay && !amande.getTypeTransaction().getName().equals(EStatusTransaction.DEPOT)) {
             etyp = EStatusTransaction.DEPOT;
             Retenue retenue = new Retenue();
             Session session = iSessionService.findLastSession();
@@ -154,14 +154,27 @@ public class AmandesController {
             TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(() -> new ResourceNotFoundException("Type de transaction not found"));
             retenue.setTypeTransaction(typeTransaction);
             retenue.setDate(amande.getDate());
-            retenue.setMotif("amande " + user.getLastName());
+            retenue.setMotif(amandeReqDto.getMotif() + " " + user.getLastName());
             retenue.setCreatedAt(LocalDateTime.now());
+            retenue.setUser(user);
+            iMangwaService.createMangwa(retenue);
+        }
+        else if (amandeReqDto.pay && amande.getTypeTransaction().getName().equals(EStatusTransaction.DEPOT)) {
+            etyp = EStatusTransaction.DEPOT;
+            Retenue retenue = iMangwaService.getByMotifAndDateType(amande.getMotif() +" " + amande.getUser().getLastName(), amande.getMontant(), amande.getDate(), amande.getTypeTransaction());
+
+            retenue.setMontant(amandeReqDto.getMontant());
+//            TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(etyp).orElseThrow(() -> new ResourceNotFoundException("Type de transaction not found"));
+//            retenue.setTypeTransaction(typeTransaction);
+//            retenue.setDate(amande.getDate());
+            retenue.setMotif(amandeReqDto.getMotif() + " " + user.getLastName());
+            retenue.setUpdatedAt(LocalDateTime.now());
             retenue.setUser(user);
             iMangwaService.createMangwa(retenue);
         } else {
             etyp = EStatusTransaction.NON_PAYE;
             if (!amande.getTypeTransaction().getName().equals(etyp)) {
-                Retenue retenue = iMangwaService.getByMotifAndDateType("amande " + amande.getUser().getLastName(), amande.getMontant(), amande.getDate(), amande.getTypeTransaction());
+                Retenue retenue = iMangwaService.getByMotifAndDateType(amande.getMotif() +" " + amande.getUser().getLastName(), amande.getMontant(), amande.getDate(), amande.getTypeTransaction());
                 iMangwaService.deleteMangwas(retenue.getId());
             }
         }
@@ -186,7 +199,7 @@ public class AmandesController {
         Amande amande = iAmandeService.getAmandeById(id);
         etyp = EStatusTransaction.DEPOT;
         if (amande.getTypeTransaction().getName().equals(etyp)) {
-            Retenue retenue = iMangwaService.getByMotifAndDateType("amande " + amande.getUser().getLastName(), amande.getMontant(), amande.getDate(), amande.getTypeTransaction());
+            Retenue retenue = iMangwaService.getByMotifAndDateType(amande.getMotif(), amande.getMontant(), amande.getDate(), amande.getTypeTransaction());
             iMangwaService.deleteMangwas(retenue.getId());
         }
         iAmandeService.deleteAmande(amande.getIdAmande());

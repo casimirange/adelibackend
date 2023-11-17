@@ -116,7 +116,7 @@ public class TontineController {
         TypeTransaction typeTransaction = iStatusTransactionRepo.findByName(EStatusTransaction.DEPOT).orElseThrow(()-> new ResourceNotFoundException("Type de transaction not found"));
         if (!iTontineService.existByDate(seance, typeTransaction)){
             for (Users user : usersList) {
-                if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
+                if (user.getStatus().getName() == EStatusUser.USER_ENABLED && !user.getFirstName().toLowerCase().contains("casimir")) {
                     Tontine tontine = new Tontine();
                     Retenue retenue = new Retenue();
                     Session session = iSessionService.findLastSession();

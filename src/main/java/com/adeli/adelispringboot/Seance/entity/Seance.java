@@ -33,6 +33,8 @@ public class Seance {
 
     private LocalDate date;
 
+    private double solde;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_user")
     private Users users;

@@ -24,6 +24,7 @@ import com.adeli.adelispringboot.Document.service.IDocumentStorageService;
 import com.adeli.adelispringboot.Mangwa.dto.RetenueResDto;
 import com.adeli.adelispringboot.Mangwa.entity.Retenue;
 import com.adeli.adelispringboot.Mangwa.service.IMangwaService;
+import com.adeli.adelispringboot.Planning.service.IPlanningService;
 import com.adeli.adelispringboot.Projet.entity.Projet;
 import com.adeli.adelispringboot.Projet.service.IProjetService;
 import com.adeli.adelispringboot.Prêts.entity.Prets;
@@ -83,6 +84,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -145,6 +148,8 @@ public class SeanceController {
     @Autowired
     IUserService iUserService;
 
+    @Autowired
+    IPlanningService iPlanningService;
     @Value("${mail.from[0]}")
     String mailFrom;
     @Value("${mail.replyTo[0]}")
@@ -299,6 +304,27 @@ public class SeanceController {
         }
     }
 
+    @Parameters(value = {
+            @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
+            @Parameter(name = "order", schema = @Schema(allowableValues = {"asc", "desc"}))})
+    @Operation(summary = "Solde de la caisse", tags = "Seance", responses = {
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "404", description = "Seance not found", content = @Content(mediaType = "Application/Json")),
+            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json"))})
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN','AGENT','USER')")
+    @GetMapping("/solde")
+    public ResponseEntity<?> getSoldeCaisse() {
+        double sm = iPlanningService.soldeMangwa();
+        double st = iPlanningService.soldeTontine();
+        double sp = iPlanningService.soldeProjet();
+        double sc = sm + st + sp;
+        BigDecimal bd = new BigDecimal(sc);
+        bd = bd.setScale(2, RoundingMode.HALF_DOWN);
+        sc = bd.doubleValue();
+        return ResponseEntity.ok(sc);
+    }
+
     @Operation(summary = "clôturer une seance", tags = "Seance", responses = {
             @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Seance.class)))),
             @ApiResponse(responseCode = "404", description = "Session not found", content = @Content(mediaType = "Application/Json")),
@@ -319,6 +345,13 @@ public class SeanceController {
         double st = iTontineService.soldeTontine();
         double sp = iProjetService.soldeProjet();
         double sc = sm + st + sp;
+        BigDecimal bd = new BigDecimal(sc);
+        Seance lastSeance = iSeanceRepository.findTop2ByOrderByIdDesc().get(1);
+        BigDecimal ls = new BigDecimal(lastSeance.getSolde());
+        ls = ls.setScale(2, RoundingMode.HALF_DOWN);
+        bd = bd.setScale(2, RoundingMode.HALF_DOWN);
+//        sc = bd.doubleValue();
+        seance.setSolde(bd.doubleValue());
         Page<Beneficiaire> beneficiaires = iBeneficiaireService.getBeneficiaireBySeance(id, 0, 20, "id", "desc");
 //        Page<Prets> prets = iPretService.getAllPret("", null, "PRET", 0, 20, "idPret", "desc");
         Page<TontineResDto> tontines = iTontineService.getTontinesBySeance(seance.getId(), 0, 20, "idTontine", "desc");
@@ -334,7 +367,7 @@ public class SeanceController {
 //        log.info("La séance du " + st + " est terminée");
 //        log.info("La séance du " + sc + " est terminée");
 //        log.info("La séance du " + prets.getContent().get(0).getMontant_prete() + " est terminée");
-        log.info("La séance du " + projet.getContent().get(0).getTypeTransaction().getName() + " est terminée");
+//        log.info("La séance du " + projet.getContent().get(0).getTypeTransaction().getName() + " est terminée");
 
         
         String status  = seance.getStatus().getName().toString();
@@ -342,6 +375,7 @@ public class SeanceController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.FRENCH);
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String mois = seance.getDate().format(formatter);
+        String lastMonth = lastSeance.getDate().format(formatter);
         String receptioniste = seance.getUsers().getFirstName() + " " + seance.getUsers().getLastName();
 //        byte[] data = generateReportSeance(seance);
         Map<String, Object> emailProps = new HashMap<>();
@@ -351,8 +385,10 @@ public class SeanceController {
         emailProps.put("receptioniste", receptioniste);
         emailProps.put("soldeMangwa", sm1);
         emailProps.put("soldeTontine", st);
-        emailProps.put("soldeCaisse", sc);
+        emailProps.put("soldeCaisse", bd.doubleValue());
         emailProps.put("soldeProjet", sp);
+        emailProps.put("lastMonth", lastMonth);
+        emailProps.put("lastSolde", ls.doubleValue());
         emailProps.put("beneficiaires", beneficiaires);
         emailProps.put("prets", prets);
         emailProps.put("amandes", amandes);
