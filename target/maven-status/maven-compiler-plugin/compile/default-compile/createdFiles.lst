@@ -5,7 +5,6 @@ com/adeli/adelispringboot/Discipline/entity/TypeDiscipline.class
 com/adeli/adelispringboot/initDatas/InitTypeDiscipline.class
 com/adeli/adelispringboot/Beneficiaires/entity/Beneficiaire.class
 com/adeli/adelispringboot/authentication/WebSecurityConfig.class
-com/adeli/adelispringboot/Document/repository/IDocumentStoragePropertiesRepo.class
 com/adeli/adelispringboot/configuration/globalConfiguration/ApplicationConstant.class
 com/adeli/adelispringboot/Beneficiaires/dto/BenefUptDto.class
 com/adeli/adelispringboot/Tontine/service/ITontineService.class
@@ -20,7 +19,6 @@ com/adeli/adelispringboot/initDatas/InitPretStatus.class
 com/adeli/adelispringboot/authentication/dto/ConfirmAccountDto.class
 com/adeli/adelispringboot/Prêts/service/PretServiceImpl.class
 com/adeli/adelispringboot/authentication/dto/MessageResponseDto.class
-com/adeli/adelispringboot/Document/entity/DocumentStorageProperties.class
 com/adeli/adelispringboot/authentication/dto/AuthResDto.class
 com/adeli/adelispringboot/configuration/globalConfiguration/AuditorAwareImpl.class
 com/adeli/adelispringboot/Beneficiaires/dto/BenefReqDto.class
@@ -42,7 +40,6 @@ com/adeli/adelispringboot/authentication/controller/AuthenticationRest.class
 com/adeli/adelispringboot/Prêts/service/IStatusPretRepo.class
 com/adeli/adelispringboot/Users/service/IUserService.class
 com/adeli/adelispringboot/authentication/service/UserDetailsImpl.class
-com/adeli/adelispringboot/Document/service/IDocumentStorageService.class
 com/adeli/adelispringboot/Users/dto/ResponseUsersDTO.class
 com/adeli/adelispringboot/Prêts/dto/PretCreateReqDto.class
 com/adeli/adelispringboot/Session/service/ISessionService.class
@@ -54,7 +51,6 @@ com/adeli/adelispringboot/Beneficiaires/service/IBeneficiaireService.class
 com/adeli/adelispringboot/Seance/entity/Seance.class
 com/adeli/adelispringboot/authentication/dto/SignUpResponse.class
 com/adeli/adelispringboot/Prêts/entity/Prets.class
-com/adeli/adelispringboot/initDatas/InitTypeDocument.class
 com/adeli/adelispringboot/Users/entity/OldPassword.class
 com/adeli/adelispringboot/Seance/repository/ISeanceRepository.class
 com/adeli/adelispringboot/Mangwa/controller/RetenueController.class
@@ -70,7 +66,6 @@ com/adeli/adelispringboot/Users/dto/UserReqDtoImport.class
 com/adeli/adelispringboot/Tontine/dto/TontineReqDto.class
 com/adeli/adelispringboot/Users/repository/IOldPasswordRepo.class
 com/adeli/adelispringboot/Prêts/controller/PretsController.class
-com/adeli/adelispringboot/Document/entity/TypeDocument.class
 com/adeli/adelispringboot/initDatas/InitSessionStatus.class
 com/adeli/adelispringboot/Discipline/repository/ITypeDisciplineRepo.class
 com/adeli/adelispringboot/Users/repository/IRoleUserRepo.class
@@ -90,7 +85,6 @@ com/adeli/adelispringboot/Session/entity/Session.class
 com/adeli/adelispringboot/Seance/controller/SeanceController.class
 com/adeli/adelispringboot/Users/repository/IUserRepo.class
 com/adeli/adelispringboot/Amandes/service/IAmandeService.class
-com/adeli/adelispringboot/Document/dto/UploadFileResponseDto.class
 com/adeli/adelispringboot/configuration/email/service/EmailServiceImpl.class
 com/adeli/adelispringboot/authentication/service/AuthTokenFilter.class
 com/adeli/adelispringboot/Planning/service/IPlanningService.class
@@ -98,8 +92,6 @@ com/adeli/adelispringboot/Mangwa/entity/Retenue.class
 com/adeli/adelispringboot/configuration/email/service/IEmailService.class
 com/adeli/adelispringboot/Tontine/service/TontineServiceImpl.class
 com/adeli/adelispringboot/Discipline/entity/Discipline.class
-com/adeli/adelispringboot/Document/entity/ETypeDocument.class
-com/adeli/adelispringboot/Document/repository/ITypeDocumentRepo.class
 com/adeli/adelispringboot/Users/dto/UserResDto.class
 com/adeli/adelispringboot/Prêts/entity/EStatusPret.class
 com/adeli/adelispringboot/Session/service/impl/SessionServiceImpl.class
@@ -110,7 +102,6 @@ com/adeli/adelispringboot/Discipline/dto/DisciplineReqDto.class
 com/adeli/adelispringboot/Planning/controller/PlanningController.class
 com/adeli/adelispringboot/Users/entity/EStatusUser.class
 com/adeli/adelispringboot/Planning/entity/Planing.class
-com/adeli/adelispringboot/Document/service/impl/DocumentStorageServiceImpl.class
 com/adeli/adelispringboot/Session/dto/SessionResDto.class
 com/adeli/adelispringboot/authentication/dto/ResetOtpCodeDto.class
 com/adeli/adelispringboot/authentication/dto/DefaultResponseDto.class

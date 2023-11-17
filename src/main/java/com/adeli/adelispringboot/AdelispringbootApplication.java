@@ -1,6 +1,6 @@
 package com.adeli.adelispringboot;
 
-import com.adeli.adelispringboot.Document.entity.DocumentStorageProperties;
+//import com.adeli.adelispringboot.Document.entity.DocumentStorageProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -20,12 +20,10 @@ import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @SpringBootApplication
-@EnableConfigurationProperties({DocumentStorageProperties.class})
+//@EnableConfigurationProperties({DocumentStorageProperties.class})
 @Configuration
 @EnableAsync
 public class AdelispringbootApplication extends SpringBootServletInitializer {
-
-    public String PORT = System.getenv("PORT");
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
@@ -45,18 +43,7 @@ public class AdelispringbootApplication extends SpringBootServletInitializer {
         return resolver;
     }
 
-    @Bean
-    public TaskExecutor threadPoolTaskExecutor() {
 
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setQueueCapacity(100);
-        executor.setMaxPoolSize(2);
-        executor.setCorePoolSize(2);
-        executor.setThreadNamePrefix("poolThread-");
-        executor.initialize();
-
-        return executor;
-    }
 
     @Bean
     public ObjectMapper objectMapper(){

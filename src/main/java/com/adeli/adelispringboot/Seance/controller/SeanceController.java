@@ -17,10 +17,10 @@ import com.adeli.adelispringboot.Beneficiaires.service.IBeneficiaireService;
 import com.adeli.adelispringboot.Discipline.dto.DisciplineResDto;
 import com.adeli.adelispringboot.Discipline.entity.Discipline;
 import com.adeli.adelispringboot.Discipline.service.IDisciplineService;
-import com.adeli.adelispringboot.Document.entity.ETypeDocument;
-import com.adeli.adelispringboot.Document.entity.TypeDocument;
-import com.adeli.adelispringboot.Document.repository.ITypeDocumentRepo;
-import com.adeli.adelispringboot.Document.service.IDocumentStorageService;
+//import com.adeli.adelispringboot.Document.entity.ETypeDocument;
+//import com.adeli.adelispringboot.Document.entity.TypeDocument;
+//import com.adeli.adelispringboot.Document.repository.ITypeDocumentRepo;
+//import com.adeli.adelispringboot.Document.service.IDocumentStorageService;
 import com.adeli.adelispringboot.Mangwa.dto.RetenueResDto;
 import com.adeli.adelispringboot.Mangwa.entity.Retenue;
 import com.adeli.adelispringboot.Mangwa.service.IMangwaService;
@@ -157,14 +157,14 @@ public class SeanceController {
 
     SimpleDateFormat dateFor = new SimpleDateFormat("dd/MM/yyyy");
 
-    @Autowired
-    ITypeDocumentRepo iTypeDocumentRepo;
+//    @Autowired
+//    ITypeDocumentRepo iTypeDocumentRepo;
 
     @Autowired
     ResourceLoader resourceLoader;
 
-    @Autowired
-    IDocumentStorageService iDocumentStorageService;
+//    @Autowired
+//    IDocumentStorageService iDocumentStorageService;
 
     @Value("${app.api.base.url}")
     private String api_base_url;
@@ -230,79 +230,79 @@ public class SeanceController {
         return ResponseEntity.ok(iSeanceService.getById(id));
     }
 
-    @Operation(summary = "Compte rendu de la séance", tags = "Seance", responses = {
-            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Seance.class)))),
-            @ApiResponse(responseCode = "404", description = "Seance not found", content = @Content(mediaType = "Application/Json")),
-            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
-            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
-    @PostMapping("/compterendu/{id:[0-9]+}")
-    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN','USER')")
-    public ResponseEntity<?> compteRendu(@RequestBody MultipartFile file, @PathVariable Long id) {
+//    @Operation(summary = "Compte rendu de la séance", tags = "Seance", responses = {
+//            @ApiResponse(responseCode = "201", content = @Content(mediaType = "Application/Json", array = @ArraySchema(schema = @Schema(implementation = Seance.class)))),
+//            @ApiResponse(responseCode = "404", description = "Seance not found", content = @Content(mediaType = "Application/Json")),
+//            @ApiResponse(responseCode = "401", description = "Full authentication is required to access this resource", content = @Content(mediaType = "Application/Json")),
+//            @ApiResponse(responseCode = "403", description = "Forbidden : accès refusé", content = @Content(mediaType = "Application/Json")),})
+//    @PostMapping("/compterendu/{id:[0-9]+}")
+//    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN','USER')")
+//    public ResponseEntity<?> compteRendu(@RequestBody MultipartFile file, @PathVariable Long id) {
 
-        Seance seance = iSeanceService.getById(id);
-
-//        TypeDocument typeDocument = iTypeDocumentRepo.findByName(ETypeDocument.INVOICE).orElseThrow(()-> new ResourceNotFoundException("Statut :  "  +  ETypeDocument.INVOICE +  "  not found"));
-        TypeDocument typeDocument = iTypeDocumentRepo.findByName(ETypeDocument.DELIVERY).orElseThrow(()-> new ResourceNotFoundException("Statut :  "  +  ETypeDocument.DELIVERY +  "  not found"));
-        iDocumentStorageService.storeFile(file, id, "pdf", typeDocument);
-        String fileDownloadUri = api_base_url+"/api/v1.0/seance/file/" + id + "/downloadFile?type=delivery&docType=pdf";
-        seance.setLinkCompteRendu(fileDownloadUri);
-        seance.setUpdatedAt(LocalDateTime.now());
-        iSeanceService.createSeance(seance);
-
-        Map<String, Object> emailProps = new HashMap<>();
-        emailProps.put("date", seance.getDate());
-
-        List<Users> usersList = iUserService.getUsers();
-//        for (Users user : usersList) {
-//            if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
-//                emailProps.put("name", user.getLastName());
-//                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_COMPTE_RENDU+seance.getDate(), ApplicationConstant.TEMPLATE_EMAIL_COMPTE_RENDU));
-//                log.info("Email  send successfull for user: " + user.getEmail());
-//            }
-//        }
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=compte rendu-" + seance.getDate() + ".pdf");
+//        Seance seance = iSeanceService.getById(id);
+//
+////        TypeDocument typeDocument = iTypeDocumentRepo.findByName(ETypeDocument.INVOICE).orElseThrow(()-> new ResourceNotFoundException("Statut :  "  +  ETypeDocument.INVOICE +  "  not found"));
+//        TypeDocument typeDocument = iTypeDocumentRepo.findByName(ETypeDocument.DELIVERY).orElseThrow(()-> new ResourceNotFoundException("Statut :  "  +  ETypeDocument.DELIVERY +  "  not found"));
+//        iDocumentStorageService.storeFile(file, id, "pdf", typeDocument);
+//        String fileDownloadUri = api_base_url+"/api/v1.0/seance/file/" + id + "/downloadFile?type=delivery&docType=pdf";
+//        seance.setLinkCompteRendu(fileDownloadUri);
+//        seance.setUpdatedAt(LocalDateTime.now());
+//        iSeanceService.createSeance(seance);
+//
+//        Map<String, Object> emailProps = new HashMap<>();
+//        emailProps.put("date", seance.getDate());
+//
+//        List<Users> usersList = iUserService.getUsers();
+////        for (Users user : usersList) {
+////            if (user.getStatus().getName() == EStatusUser.USER_ENABLED) {
+////                emailProps.put("name", user.getLastName());
+////                emailService.sendEmail(new EmailDto(mailFrom, ApplicationConstant.ENTREPRISE_NAME, user.getEmail(), mailReplyTo, emailProps, ApplicationConstant.SUBJECT_EMAIL_COMPTE_RENDU+seance.getDate(), ApplicationConstant.TEMPLATE_EMAIL_COMPTE_RENDU));
+////                log.info("Email  send successfull for user: " + user.getEmail());
+////            }
+////        }
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline;filename=compte rendu-" + seance.getDate() + ".pdf");
 
 //        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
-        return ResponseEntity.ok(seance);
-    }
+//        return ResponseEntity.ok(seance);
+//    }
 
-    @Operation(summary = "Télécharger compte rendu pour une séance", tags = "Seance", responses = {
-            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
-            @ApiResponse(responseCode = "404", description = "File not found", content = @Content(mediaType = "Application/Json")),})
-    @GetMapping("/file/{id:[0-9]+}/downloadFile")
-    public ResponseEntity<Object> downloadFile(@PathVariable("id") Long InternalReference, @Schema(required = true, allowableValues = {"INVOICE", "DELIVERY"}, description = "Type de document") @RequestParam("type") String type, @RequestParam("docType") String docType,
-                                               HttpServletRequest request) {
-
-        TypeDocument typeDocument = iTypeDocumentRepo.findByName(ETypeDocument.valueOf(type.toUpperCase())).orElseThrow(()-> new ResourceNotFoundException("Type de document:  "  +  type +  "  not found"));
-
-        String fileName = iDocumentStorageService.getDocumentName(InternalReference, docType, typeDocument.getId());
-        Resource resource = null;
-        if (fileName != null && !fileName.isEmpty()) {
-            try {
-                resource = iDocumentStorageService.loadFileAsResource(fileName);
-            } catch (Exception e) {
-                log.info(e.getMessage());
-            }
-            // Try to determine file's content type
-            String contentType = null;
-            try {
-                contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-            } catch (IOException e) {
-                log.info("Could not determine file type.");
-            }
-            // Fallback to the default content type if type could not be determined
-            if (contentType == null) {
-                contentType = "application/octet-stream";
-            }
-            return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
-                    .body(resource);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
-        }
-    }
+//    @Operation(summary = "Télécharger compte rendu pour une séance", tags = "Seance", responses = {
+//            @ApiResponse(responseCode = "200", content = @Content(mediaType = "Application/Json")),
+//            @ApiResponse(responseCode = "404", description = "File not found", content = @Content(mediaType = "Application/Json")),})
+//    @GetMapping("/file/{id:[0-9]+}/downloadFile")
+//    public ResponseEntity<Object> downloadFile(@PathVariable("id") Long InternalReference, @Schema(required = true, allowableValues = {"INVOICE", "DELIVERY"}, description = "Type de document") @RequestParam("type") String type, @RequestParam("docType") String docType,
+//                                               HttpServletRequest request) {
+//
+//        TypeDocument typeDocument = iTypeDocumentRepo.findByName(ETypeDocument.valueOf(type.toUpperCase())).orElseThrow(()-> new ResourceNotFoundException("Type de document:  "  +  type +  "  not found"));
+//
+//        String fileName = iDocumentStorageService.getDocumentName(InternalReference, docType, typeDocument.getId());
+//        Resource resource = null;
+//        if (fileName != null && !fileName.isEmpty()) {
+//            try {
+//                resource = iDocumentStorageService.loadFileAsResource(fileName);
+//            } catch (Exception e) {
+//                log.info(e.getMessage());
+//            }
+//            // Try to determine file's content type
+//            String contentType = null;
+//            try {
+//                contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+//            } catch (IOException e) {
+//                log.info("Could not determine file type.");
+//            }
+//            // Fallback to the default content type if type could not be determined
+//            if (contentType == null) {
+//                contentType = "application/octet-stream";
+//            }
+//            return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+//                    .body(resource);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found");
+//        }
+//    }
 
     @Parameters(value = {
             @Parameter(name = "sort", schema = @Schema(allowableValues = {"id", "createdAt"})),
